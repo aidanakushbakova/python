@@ -1,10 +1,14 @@
 from datetime import datetime
 
-from pydantic import BaseModel, model_validator
+from pydantic import BaseModel, EmailStr, model_validator
 
+
+class UserBase(BaseModel):
+    email: EmailStr
+    password: str
 
 class UserRegisterSchema(BaseModel):
-    email: str
+    email: EmailStr
     password: str
     password_2: str
 
@@ -14,8 +18,13 @@ class UserRegisterSchema(BaseModel):
             raise ValueError('Passwords do not match')
         return self
 
-class UserSchema(BaseModel):
-    email: str
-    password: str
+class UserLoginSchema(UserBase): 
+    pass
+
+class UserReadSchema(BaseModel):
+    id: int
+    email: EmailStr
     first_name: str
     last_name: str
+    
+    class Config: from_attributes = True
